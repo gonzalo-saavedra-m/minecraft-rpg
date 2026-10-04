@@ -5,6 +5,7 @@
 	"name": "Souls Stats",
 	"description": "Stats de personaje al estilo Dark Souls.",
 	"license": "MIT",
+	"icon": "assets/soulsstats/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": ["soulsstats.SoulsStats"],
