@@ -16,6 +16,18 @@ subprojects {
 		def props = [version: project.version, minecraft_dependency: "~${minecraft_version.split('-')[0]}-", loader_version: loader_version]
 		inputs.properties props
 		filesMatching('fabric.mod.json') { expand props }
+		// Minecraft no cae de una variante regional (es_mx) a su idioma (es_es): cada base se copia a sus variantes,
+		// salvo a las que el mod ya traiga (ADR-0009).
+		def variants = [es_es: ['es_ar', 'es_cl', 'es_ec', 'es_mx', 'es_uy', 'es_ve'], pt_br: ['pt_pt'], fr_fr: ['fr_ca', 'fr_ch'],
+				de_de: ['de_at', 'de_ch']]
+		fileTree('src/main/resources').matching { include 'assets/*/lang/*.json' }.each { lang ->
+			variants[lang.name - '.json']?.findAll { !new File(lang.parentFile, "${it}.json").exists() }?.each { variant ->
+				from(lang) {
+					into(lang.parentFile.path - file('src/main/resources').path - '/')
+					rename { "${variant}.json" }
+				}
+			}
+		}
 	}
 
 	tasks.withType(JavaCompile).configureEach { it.options.release = 25 }

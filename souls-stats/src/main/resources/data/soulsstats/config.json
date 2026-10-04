@@ -1,0 +1,13 @@
+{
+	"level_xp": {"type": "power", "per_point": 100, "exponent": 1.2},
+	"vigor_health": {"type": "soft_caps", "steps": [{"until": 15, "per_point": 2}, {"until": 30, "per_point": 1}, {"per_point": 0.25}]},
+	"vigor_load": {"type": "linear", "base": 30, "per_point": 2},
+	"dexterity_attack_speed": {"type": "hyperbolic", "max": 0.6, "half": 20},
+	"dexterity_movement": {"type": "hyperbolic", "max": 0.15, "half": 30},
+	"luck_critical_chance": {"type": "hyperbolic", "base": 0.05, "max": 0.45, "half": 25},
+	"critical_damage": 1.5,
+	"weapon_scaling": {"type": "soft_caps", "steps": [{"until": 20, "per_point": 0.03}, {"until": 40, "per_point": 0.015}, {"per_point": 0.005}]},
+	"default_weapon_scaling": {"strength": 0.7},
+	"unmet_requirement_damage": 0.4,
+	"scaling_grades": {"S": 1.75, "A": 1.4, "B": 0.9, "C": 0.6, "D": 0.25}
+}

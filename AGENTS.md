@@ -14,13 +14,22 @@ Para trabajar en un mod, lee además `<mod>/README.md` (qué hace y sus pendient
   reporta la métrica: `git diff --shortstat` del cambio y lo que imprime `python3 docs/adr/compliance.py`.
 - **Entender antes de parchar** (ADR-0002). Lee el flujo completo de Minecraft que tocas y corrige la causa,
   no el síntoma.
-- **Código muerto se borra en el mismo cambio** (ADR-0003), incluidos assets sin uso. Sin linters de código.
+- **Código muerto se borra en el mismo cambio** (ADR-0003), incluidos assets sin uso.
+- **Tipos precisos.** `instanceof`, `getClass()` y similares solo en un proxy marcado (ADR-0006). Un método
+  retorna un solo tipo, más `null` u `Optional`; si retorna strings conocidos, usa un enum (ADR-0007).
+- **Sin números mágicos** (ADR-0008). Todo número con significado es una constante con nombre (o una fila
+  de un enum); 0 y 1 se permiten sueltos.
+- **Checks, no formatters** (ADR-0005). Los ADRs se verifican con checks propios; nada de formatters ni
+  reglas de estilo. Una violación justificada se salta con `// adr-skip ADR-NNNN: <motivo>` en su línea o la
+  anterior.
+- **Comandos en inglés**: literales, argumentos e ids que se escriben en ellos. Solo las descripciones y
+  mensajes cambian de idioma.
 - Cambios chicos y explícitos. Si cambias comportamiento, pruébalo (ver Probar) y actualiza el `README.md` del mod.
 - No toques cambios ajenos sin commitear.
 
 ## Estructura
 
-Proyecto Gradle multi-módulo (ADR-0006). La raíz define versiones (`gradle.properties`) y build
+Proyecto Gradle multi-módulo (ADR-0001). La raíz define versiones (`gradle.properties`) y build
 (`build.gradle`) para todos. Cada carpeta con `src/main/resources/fabric.mod.json` es un mod y entra sola al
 build (`settings.gradle`). Un mod tiene `gradle.properties` (`version`), código en
 `src/main/java/<modid>/` (paquete = modid, sin datos personales), assets en `src/main/resources/`, un
@@ -47,13 +56,13 @@ clon: `git config core.hooksPath .githooks`.
 
 ## Cambiar de versión
 
-Se sigue la próxima versión de Minecraft desde sus snapshots (ADR-0005). Para subir:
+Se sigue la próxima versión de Minecraft desde sus snapshots (ADR-0004). Para subir:
 
 1. Busca la última versión de juego en `https://meta.fabricmc.net/v2/versions/game` que tenga Fabric API en
    `https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml` (sufijo `+<versión
    base>`). Revisa también Loader y Loom en el `gradle.properties` del template oficial
    (`FabricMC/fabric-example-mod`).
-2. Actualiza `gradle.properties` raíz. Si cambia la versión de Java, actualiza `build.gradle` y ADR-0005.
+2. Actualiza `gradle.properties` raíz. Si cambia la versión de Java, actualiza `build.gradle` y ADR-0004.
 3. `./gradlew build`, arregla lo que rompa entendiendo el cambio de API (ADR-0002) y prueba cada mod en
    servidor (ver Probar).
 
@@ -93,6 +102,9 @@ jugadores.
 
 - `PENDINGS.md`: borra lo que cierres en el mismo commit, agrega lo que dejes pendiente.
 - `<mod>/README.md`: comportamiento observable y pendientes del mod, siempre al día.
+- `<mod>/README.md`, apartado "Extender desde otro mod" (si el mod expone API): eventos que emite, cómo
+  registrar contenido y cómo cambiar sus datos desde otro mod, con ejemplo. Al agregar o cambiar algo de eso,
+  actualízalo en el mismo cambio; lo que aún no existe pero se espera, márcalo **(pendiente)**.
 - `SPEC.md`: objetivo del repo y una línea por mod.
 
 <!-- ADR:START -->
@@ -107,7 +119,7 @@ datos o algo marcado con `@decision ADR-NNNN`, lee el índice que corresponda y 
 - Un ADR `accepted` no se reescribe: se reemplaza con uno nuevo (`supersedes` / `superseded_by`).
 - Un ADR que solo afecta a un mod va en `<mod>/docs/adr/`, no en la raíz.
 - Cada ADR nombra en "Enforced by" el check más chico que falla si se rompe, o dice que es por revisión. Los
-  checks son funciones `adr_NNNN()` en el `compliance.py` de su carpeta de ADRs y corren en pre-commit. Nada de linters de
-  código (ADR-0003): los checks miran build, metadata y assets.
+  checks son funciones `adr_NNNN()` en el `compliance.py` de su carpeta de ADRs, los no triviales tienen un
+  caso en `test_compliance.py`, y ambos corren en pre-commit. Sin formatters ni reglas de estilo (ADR-0005).
 - Tras escribir o cambiar uno, actualiza el índice y corre `.githooks/pre-commit`.
 <!-- ADR:END -->
