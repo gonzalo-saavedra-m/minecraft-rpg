@@ -1,0 +1,37 @@
+# Compila cada mod para cada versión de Minecraft soportada (ADR-0010). A mano, con un mod, además lo publica.
+name: Build
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mod:
+        description: Carpeta del mod a publicar (por ejemplo souls-stats)
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # game_versions: las versiones de Modrinth y CurseForge que cubre el jar. Sin args, gradle.properties.
+        args:
+          - -Pminecraft_version=26.1 -Pfabric_api_version=0.145.1+26.1 -Pgame_versions=26.1,26.1.1,26.1.2
+          - -Pminecraft_version=26.2 -Pfabric_api_version=0.161.0+26.2 -Pgame_versions=26.2
+          - -Pminecraft_version=26.3 -Pfabric_api_version=0.161.0+26.3 -Pgame_versions=26.3
+          - ""
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew build ${{ matrix.args }}
+      - if: github.event_name == 'workflow_dispatch' && contains(matrix.args, 'game_versions')
+        run: ./gradlew ":$MOD:publishMods" ${{ matrix.args }}
+        env:
+          MOD: ${{ inputs.mod }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}

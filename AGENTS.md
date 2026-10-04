@@ -52,11 +52,24 @@ clon: `git config core.hooksPath .githooks`.
 ./gradlew build                      # jars en <mod>/build/libs/
 ./gradlew :<mod>:runClient           # cliente con el mod
 ./gradlew :<mod>:runServer           # servidor dedicado; mundo en <mod>/run/
+./gradlew build -Pminecraft_version=26.1 -Pfabric_api_version=0.145.1+26.1   # otra versión (ADR-0010)
 ```
+
+Una versión anterior no abre el mundo de `<mod>/run/`: para `runServer` pasa `--args="nogui --universe <carpeta>"`.
+
+## Publicar
+
+Hay un jar por versión de Minecraft desde 26.1 (ADR-0010); la matriz de `.github/workflows/build.yml` es la lista de
+versiones y CI compila todas en cada push a `main`. Para publicar un mod: Actions → Build → Run workflow con su carpeta. Sube a
+cada plataforma cuyo id tenga el `gradle.properties` del mod (`modrinth_id`, `curseforge_id`), con los secrets
+`MODRINTH_TOKEN` y `CURSEFORGE_TOKEN`. La `version` del mod debe ser nueva: las plataformas rechazan repetirla.
 
 ## Cambiar de versión
 
-Se sigue la próxima versión de Minecraft desde sus snapshots (ADR-0004). Para subir:
+Se desarrolla en la próxima versión de Minecraft desde sus snapshots (ADR-0004) y se publica también para las
+anteriores desde 26.1 (ADR-0010). Si una API cambió entre versiones, usa una que exista en todas. Cuando sale una
+versión estable o un parche, agrégalo a la matriz del workflow (`game_versions` de su fila, o una fila nueva
+compilada contra el primer parche). Para subir la de desarrollo:
 
 1. Busca la última versión de juego en `https://meta.fabricmc.net/v2/versions/game` que tenga Fabric API en
    `https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml` (sufijo `+<versión

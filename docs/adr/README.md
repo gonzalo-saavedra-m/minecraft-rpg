@@ -28,4 +28,7 @@ Decisiones generales del repo, un archivo numerado por decisión (`NNNN-titulo.m
 - [0009](0009-idiomas-con-respaldo-en-ingles.md) — El texto visible es traducible con respaldo en inglés en el
   código; cada idioma base se copia a sus variantes regionales en el build (proposed).
 
+- [0010](0010-un-jar-por-version-desde-26-1.md) — Un jar por versión de Minecraft, desde 26.1 hasta la más nueva,
+  del mismo código; la matriz de CI es la lista de versiones. Aplica a `build.gradle` y `.github/workflows/build.yml`.
+
 <!-- ADR-INDEX:END -->

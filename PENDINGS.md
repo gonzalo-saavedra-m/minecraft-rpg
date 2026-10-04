@@ -9,5 +9,7 @@ mismo commit; quien deje algo pendiente lo agrega aquí. Sin historial: eso est�
   quedó en 1.21.x y Curios en 26.x es solo NeoForge. Su última versión (`4.2.1+26.3`) exige Minecraft 26.3.x
   y no carga en los snapshots de 26.4 que sigue el repo (ADR-0004): hacer el puente cuando publique para la
   versión del repo. El puente usa `SoulsStats.addEquipment` (README de souls-stats, "Extender desde otro mod").
+- **Proyectos en Modrinth y CurseForge.** Crearlos para cada mod, poner `modrinth_id` y `curseforge_id` en su
+  `gradle.properties` y los secrets `MODRINTH_TOKEN` y `CURSEFORGE_TOKEN` en GitHub (ver Publicar en `AGENTS.md`).
 - **Compilar un mod contra otro.** El `build.gradle` raíz aún no lo soporta; agregarlo con el mod de
   habilidades.

@@ -1,9 +1,15 @@
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}" apply false
+	id 'me.modmuss50.mod-publish-plugin' version '2.2.1' apply false
 }
 
 subprojects {
 	apply plugin: 'net.fabricmc.fabric-loom'
+	apply plugin: 'me.modmuss50.mod-publish-plugin'
+
+	// Un jar por versión de Minecraft, con la versión en el nombre: 1.0.0+26.3 (ADR-0010).
+	def minecraftBase = minecraft_version.split('-')[0]
+	version = "${version}+${minecraftBase}"
 
 	dependencies {
 		minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -13,7 +19,7 @@ subprojects {
 
 	processResources {
 		// ~26.4- acepta snapshots, pre-releases y la versión final de 26.4, igual que Fabric API.
-		def props = [version: project.version, minecraft_dependency: "~${minecraft_version.split('-')[0]}-", loader_version: loader_version]
+		def props = [version: project.version, minecraft_dependency: "~${minecraftBase}-", loader_version: loader_version]
 		inputs.properties props
 		filesMatching('fabric.mod.json') { expand props }
 		// Minecraft no cae de una variante regional (es_mx) a su idioma (es_es): cada base se copia a sus variantes,
@@ -31,4 +37,25 @@ subprojects {
 	}
 
 	tasks.withType(JavaCompile).configureEach { it.options.release = 25 }
+
+	// Publica en cada plataforma donde el mod declare su proyecto (<mod>/gradle.properties); game_versions lo pasa
+	// el workflow de CI con las versiones que cubre este jar (ADR-0010).
+	publishMods {
+		file = jar.archiveFile
+		type = STABLE
+		modLoaders.add('fabric')
+		def gameVersions = (project.findProperty('game_versions') ?: minecraft_version).split(',')*.trim()
+		if (project.hasProperty('modrinth_id')) modrinth {
+			projectId = modrinth_id
+			accessToken = providers.environmentVariable('MODRINTH_TOKEN')
+			minecraftVersions.addAll(gameVersions)
+			requires('fabric-api')
+		}
+		if (project.hasProperty('curseforge_id')) curseforge {
+			projectId = curseforge_id
+			accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
+			minecraftVersions.addAll(gameVersions)
+			requires('fabric-api')
+		}
+	}
 }

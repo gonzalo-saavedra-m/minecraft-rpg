@@ -3,7 +3,6 @@ package soulsstats.item;
 import java.util.Optional;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +31,8 @@ public final class LevelRequirements {
 			if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
 				missing(player, ItemProperties.of(stack).equipableAtLevel()).ifPresent(required -> {
 					player.setItemSlot(slot, ItemStack.EMPTY);
-					player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
+					// placeItemBackInInventory y drop cambian de firma entre versiones; estos dos no (ADR-0010).
+					if (!player.getInventory().add(stack)) player.spawnAtLocation(player.level(), stack);
 					Notifications.cannotEquip(player, required);
 				});
 			}

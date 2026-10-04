@@ -2,7 +2,8 @@
 
 Stats de personaje al estilo Dark Souls: peso del equipamiento, nivel por matar mobs y stats que deciden
 cuánto cargas, cuánto pegas, qué armas usas y cuántos críticos sacas. Es la base para un mod de habilidades
-posterior, que dependerá de este (ADR-0001 de la raíz). Nombre y modid provisorios.
+posterior, que dependerá de este (ADR-0001 de la raíz). Nombre y modid provisorios. Funciona en Minecraft 26.1 en
+adelante, con un jar por versión (ADR-0010 de la raíz).
 
 Lo de abajo es la visión; se itera por partes (ver Pendientes). Primero todo funciona con comandos y mensajes
 coloreados en el chat; una interfaz gráfica (HUD, pantallas) vendrá después, y el código se prepara para

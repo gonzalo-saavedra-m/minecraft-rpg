@@ -1,7 +1,7 @@
 # Especificación
 
-Mods de Fabric que agregan progresión RPG al estilo Dark Souls, para la próxima versión de Minecraft
-(ADR-0004). Cada mod es un jar; un mod puede depender de otro del repo si lo extiende (ADR-0001).
+Mods de Fabric que agregan progresión RPG al estilo Dark Souls, desarrollados en la próxima versión de Minecraft
+(ADR-0004) y publicados para cada versión desde 26.1 (ADR-0010). Cada mod es un jar; un mod puede depender de otro del repo si lo extiende (ADR-0001).
 
 ## Mods
 
