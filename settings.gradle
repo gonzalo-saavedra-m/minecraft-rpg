@@ -1,0 +1,12 @@
+pluginManagement {
+	repositories {
+		maven { url = 'https://maven.fabricmc.net/' }
+		mavenCentral()
+		gradlePluginPortal()
+	}
+}
+
+rootProject.name = 'minecraft-rpg'
+
+// Cada carpeta con un fabric.mod.json es un mod: crear la carpeta basta para sumarlo al build.
+file('.').eachDir { if (new File(it, 'src/main/resources/fabric.mod.json').exists()) include it.name }

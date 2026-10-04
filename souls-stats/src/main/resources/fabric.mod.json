@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"id": "soulsstats",
+	"version": "${version}",
+	"name": "Souls Stats",
+	"description": "Stats de personaje al estilo Dark Souls.",
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["soulsstats.SoulsStats"]
+	},
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": "${minecraft_dependency}",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

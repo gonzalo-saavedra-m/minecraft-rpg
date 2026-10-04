@@ -1,0 +1,10 @@
+#!/bin/sh
+# Revisa el árbol de trabajo, no solo lo staged. Cada mod valida sus propios ADRs y tags @decision.
+set -e
+python3 docs/adr/validate-adrs.py --strict --no-code-scan
+python3 docs/adr/compliance.py
+for mod in */docs/adr; do
+	[ -d "$mod" ] || continue
+	python3 docs/adr/validate-adrs.py --strict --root "${mod%/docs/adr}" --adr-dir docs/adr
+	[ ! -f "$mod/compliance.py" ] || python3 "$mod/compliance.py"
+done

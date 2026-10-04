@@ -1,0 +1,22 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}" apply false
+}
+
+subprojects {
+	apply plugin: 'net.fabricmc.fabric-loom'
+
+	dependencies {
+		minecraft "com.mojang:minecraft:${minecraft_version}"
+		implementation "net.fabricmc:fabric-loader:${loader_version}"
+		implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+	}
+
+	processResources {
+		// ~26.4- acepta snapshots, pre-releases y la versión final de 26.4, igual que Fabric API.
+		def props = [version: project.version, minecraft_dependency: "~${minecraft_version.split('-')[0]}-", loader_version: loader_version]
+		inputs.properties props
+		filesMatching('fabric.mod.json') { expand props }
+	}
+
+	tasks.withType(JavaCompile).configureEach { it.options.release = 25 }
+}
