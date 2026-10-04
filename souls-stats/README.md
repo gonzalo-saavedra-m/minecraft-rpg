@@ -286,7 +286,8 @@ números (`inv/EquipLoad`, `combat/WeaponStats`, `stats/PlayerStats`); no copiar
 
 Decisiones abiertas, para el dueño del repo:
 
-- **Sprite del tótem del renacer.** Hoy usa el del tótem vanilla; hacer uno propio.
+- **Receta del tótem del renacer.** Propuesta: sin forma, tótem de la inmortalidad + estrella del Nether +
+  fragmento de eco (asaltos, Wither y ciudad antigua: contenido de fin de juego).
 - **Interfaz gráfica.** HUD de nivel y XP, pantalla para repartir puntos y ver stats. Mientras tanto,
   todo por comandos y chat coloreado (ADR-0005 del mod); un comando podrá abrir una pantalla.
 - **Revisar traducciones.** Las de idiomas distintos del español son una primera versión; conviene que las
