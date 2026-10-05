@@ -38,6 +38,17 @@ subprojects {
 
 	tasks.withType(JavaCompile).configureEach { it.options.release = 25 }
 
+	// Tests de cliente con capturas (runClientGameTest): abren una ventana real, así que corren a mano; CI solo los compila.
+	if (file('src/gametest').exists()) {
+		fabricApi.configureTests {
+			createSourceSet = true
+			modId = "${project.name}-gametest"
+			enableGameTests = false
+			eula = true
+		}
+		tasks.named('check') { dependsOn 'compileGametestJava' }
+	}
+
 	// Publica en cada plataforma donde el mod declare su proyecto (<mod>/gradle.properties); game_versions lo pasa
 	// el workflow de CI con las versiones que cubre este jar (ADR-0010).
 	publishMods {

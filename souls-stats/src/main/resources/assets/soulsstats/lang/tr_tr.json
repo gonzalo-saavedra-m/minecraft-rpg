@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "Gereksinimler:",
 	"soulsstats.tooltip.level": "Seviye",
 	"soulsstats.tooltip.equip_level": "Kuşanma seviyesi",
-	"soulsstats.tooltip.scaling": "Ölçekleme:"
+	"soulsstats.tooltip.scaling": "Ölçekleme:",
+	"key.soulsstats.open": "İstatistikleri aç",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "Karakter",
+	"soulsstats.screen.level": "Seviye %s",
+	"soulsstats.screen.xp": "TP %s / %s",
+	"soulsstats.screen.free_points": "%s serbest puan",
+	"soulsstats.screen.no_free_points": "Serbest puan yok",
+	"soulsstats.screen.raise": "Shift + tıkla: +%s",
+	"soulsstats.screen.no_server": "Bu sunucuda Souls Stats yok",
+	"soulsstats.toast.level_up": "Seviye %s!",
+	"soulsstats.toast.free_points": "%s serbest puan · %s"
 }

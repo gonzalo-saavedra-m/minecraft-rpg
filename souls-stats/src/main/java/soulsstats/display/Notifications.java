@@ -1,10 +1,11 @@
 package soulsstats.display;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
 import soulsstats.event.EventBus;
 import soulsstats.event.LevelUpEvent;
-import soulsstats.event.StatsChangedEvent;
+import soulsstats.progress.PlayerStatsPayload;
 
 /** Avisos al jugador cuando algo le pasa sin que él lo pida: subir de nivel, cambiar stats, un ítem que pide más nivel. */
 public final class Notifications {
@@ -19,9 +20,12 @@ public final class Notifications {
 	}
 
 	public static void register() {
-		EventBus.listen(LevelUpEvent.class, event -> event.player().sendSystemMessage(
-				Text.tr("level_up", "You reached level %s", event.progress().level()).withStyle(ChatFormatting.GOLD)
-						.append(Text.freePoints(event.progress()))));
-		EventBus.listen(StatsChangedEvent.class, event -> event.player().sendSystemMessage(Text.summary(event.player())));
+		// Un cliente con el mod lo ve en un toast (LevelUpToast); el chat queda para los que no lo tienen.
+		EventBus.listen(LevelUpEvent.class, event -> {
+			if (!ServerPlayNetworking.canSend(event.player(), PlayerStatsPayload.TYPE)) {
+				event.player().sendSystemMessage(Text.tr("level_up", "You reached level %s", event.progress().level()).withStyle(ChatFormatting.GOLD)
+						.append(Text.freePoints(event.progress())));
+			}
+		});
 	}
 }

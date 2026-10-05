@@ -1,0 +1,12 @@
+{
+	"schemaVersion": 1,
+	"id": "souls-stats-gametest",
+	"version": "1.0.0",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": ["soulsstats.gametest.StatsScreenTest"]
+	},
+	"depends": {
+		"soulsstats": "*"
+	}
+}

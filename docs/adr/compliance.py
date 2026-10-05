@@ -75,7 +75,8 @@ def adr_0003(mod):
     files = java(mod)
     registered = set(re.findall(rf'fromNamespaceAndPath\("{modid}", "(\w+)"\)', ''.join(files.values())))
     jsons = {f: f.read_text() for f in res.rglob('*.json')}
-    errors = dead_java(files, ''.join(t for f, t in jsons.items() if f.name.endswith(('fabric.mod.json', 'mixins.json'))))
+    # Los entrypoints también se declaran en el fabric.mod.json de otros source sets (src/gametest).
+    errors = dead_java(files, ''.join(f.read_text() for f in (mod / 'src').rglob('*.json') if f.name.endswith(('fabric.mod.json', 'mixins.json'))))
     for kind in ('assets/{m}/blockstates', 'assets/{m}/items', 'data/{m}/loot_table/blocks'):
         for f in (res / kind.format(m=modid)).glob('*.json'):
             if f.stem not in registered:
@@ -93,7 +94,9 @@ def adr_0003(mod):
         base = res / f'assets/{modid}/{kind}'
         for f in base.rglob('*.*'):
             rid = f'{modid}:{f.relative_to(base).with_suffix("").as_posix()}'
-            if not any(rid in text for other, text in jsons.items() if other != f):
+            sprite = f.relative_to(base).as_posix().removeprefix('gui/sprites/').removesuffix('.png')
+            # Los sprites de la GUI se dibujan desde Java por su id sin gui/sprites/.
+            if not any(rid in text for other, text in jsons.items() if other != f) and sprite not in registered:
                 errors.append(f'ADR-0003 {f.relative_to(ROOT)}: nadie usa {rid}')
     return errors
 

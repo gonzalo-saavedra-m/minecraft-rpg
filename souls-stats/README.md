@@ -5,10 +5,9 @@ cuánto cargas, cuánto pegas, qué armas usas y cuántos críticos sacas. Es la
 posterior, que dependerá de este (ADR-0001 de la raíz). Nombre y modid provisorios. Funciona en Minecraft 26.1 en
 adelante, con un jar por versión (ADR-0010 de la raíz).
 
-Lo de abajo es la visión; se itera por partes (ver Pendientes). Primero todo funciona con comandos y mensajes
-coloreados en el chat; una interfaz gráfica (HUD, pantallas) vendrá después, y el código se prepara para
-eso: cada comando arma su salida en su clase de `command/` y los avisos viven en `display/` (ADR-0005 del
-mod); la lógica no le muestra nada al jugador.
+Lo de abajo es la visión; se itera por partes (ver Pendientes). El jugador usa la pantalla de stats (tecla K);
+los comandos quedan para admins y clientes sin el mod. Cada comando arma su salida en su clase de `command/` y
+las pantallas y avisos viven en `display/` (ADR-0005 del mod); la lógica no le muestra nada al jugador.
 
 ## Código
 
@@ -18,7 +17,8 @@ En `src/main/java/soulsstats/`, una carpeta por tema; `SoulsStats` es la entrada
 - `event/`: `EventBus`, los eventos que emite el mod (`LevelUpEvent`, `StatsChangedEvent`) y `PlayerRefresh`
   (recalcular algo del jugador cuando sus stats pueden haber cambiado).
 - `progress/`: nivel, XP y puntos del jugador (`PlayerProgress`), la XP por mob (`MobXpTable`) y
-  `PlayerStatsPayload`, que le manda al cliente su nivel y stats.
+  `PlayerStatsPayload`, que le manda al cliente su progreso, stats y carga, y `RaisePayload`, con el que la
+  pantalla de stats reparte puntos.
 - `stat/`: las stats (`Stat`, su registro), una clase por efecto de stat con el nombre `<Stat><Efecto>`
   (`VigorHealth`, `VigorLoad`, `DexteritySpeed`, `CriticalDamage`), el daño del arma según las stats
   (`WeaponScaling`) y el tótem del renacer
@@ -28,13 +28,23 @@ En `src/main/java/soulsstats/`, una carpeta por tema; `SoulsStats` es la entrada
 - `weight/`: peso de un ítem y de lo equipado (`ItemWeight`) y carga del jugador con sus efectos (`Load`).
 - `data/`: `Datapack` (cargador común de los JSON de datapack: tablas por id y objetos de config), `Config`
   (los números de `config.json`) y `Scaling` (una escala `base + per_point × puntos`).
-- `command/`: un comando por clase (ADR-0005 del mod). `display/`: texto compartido, avisos y el tooltip de
-  peso, stats, requisitos y escalado de los ítems (`ItemTooltip`).
+- `command/`: un comando por clase (ADR-0005 del mod). `display/`: texto compartido, avisos, la pantalla de
+  stats (`StatsScreen`), el toast de subida de nivel (`LevelUpToast`) y el tooltip de peso, stats, requisitos y escalado de los ítems (`ItemTooltip`).
+- `src/gametest/`: test de cliente que abre la pantalla de stats y guarda capturas (`runClientGameTest`).
 - `mixin/`: cambios al código de Minecraft: el daño de un golpe pasa por el crítico (`LivingEntityMixin`) y,
-  en el cliente, no se corre sobrecargado (`LocalPlayerMixin`).
+  en el cliente, no se corre sobrecargado (`LocalPlayerMixin`) y se guarda el `ToastManager`
+  (`ToastManagerMixin`, porque su getter cambia entre versiones).
 
 ## Qué hace hoy
 
+- **Pantalla de stats** (tecla K, configurable en Controles, categoría Souls Stats; si el cliente tiene el mod).
+  Muestra nivel, XP hacia el siguiente, puntos libres, cada stat (también las de otros mods) con su valor y un
+  botón **+** que reparte un punto (shift-click: 5, o los que queden), y peso, carga máxima y nivel de carga. Se
+  actualiza sola cuando cambian (matar, subir, equipar). K o Esc la cierran; no pausa el juego. Con un servidor
+  sin el mod dice que no lo tiene.
+- **Toast de subida de nivel** (si el cliente tiene el mod): arriba a la derecha, "¡Nivel N!" con los puntos libres
+  y la tecla para repartirlos, y un ícono de orbe de XP con flecha (`textures/gui/sprites/level_up.png`, fuente en
+  `art/level_up.art.txt`, sobre el orbe vanilla). Un cliente sin el mod recibe el aviso en el chat.
 - Cada jugador tiene nivel (desde 1) y XP propios, guardados en el jugador y conservados al morir.
 - Matar un mob da la XP que dice la tabla `data/soulsstats/mob_xp.json` (ADR-0001 del mod): por defecto un
   zombie da 10, un creeper 20, un piglin 15, un piglin brute 60. Un mob que no está en la tabla (pasivos,
@@ -51,7 +61,8 @@ En `src/main/java/soulsstats/`, una carpeta por tema; `SoulsStats` es la entrada
   nivel 1, ~1585 en el 10, ~5923 en el 30), una curva que acelera como el costo en almas de Dark Souls. La XP
   sobrante pasa al nivel siguiente.
 - Subir de nivel emite el evento `LevelUpEvent` (jugador y progreso nuevo) por `EventBus`, que llama a quienes lo
-  escuchan con `EventBus.listen(LevelUpEvent.class, ...)`. `Notifications` lo escucha y avisa en el chat, en dorado.
+  escuchan con `EventBus.listen(LevelUpEvent.class, ...)`. `Notifications` lo escucha y avisa en el chat, en dorado, solo
+  a los clientes sin el mod; los que lo tienen ven el toast.
 - **Stats.** Vigor, fuerza, destreza y suerte (en comandos `vigor`, `strength`, `dexterity`, `luck`) parten en 10. Cada nivel sobre 1 da un punto para repartir
   (puntos libres = nivel − 1 + puntos extra − puntos ya repartidos). Otros mods suman stats con `Registry.register(Stat.REGISTRY, ...)` en su
   `onInitialize`; las de este mod no se pueden quitar (ADR-0003 del mod). Los puntos de una stat que ya no
@@ -98,7 +109,7 @@ En `src/main/java/soulsstats/`, una carpeta por tema; `SoulsStats` es la entrada
   `SoulsStatsCommand.SUBCOMMANDS` es el registro: de ahí se registran y de ahí lee `/soulsstats help`, que
   lista cada subcomando que el jugador puede usar con su sintaxis (sacada del árbol de comandos) y su
   descripción. Un comando nuevo se agrega a esa lista. `/soulsstats` muestra en colores nivel, XP, puntos libres y stats. `/soulsstats raise <stat>
-  [amount]` reparte puntos (por ejemplo `/soulsstats raise vigor 3`); si no alcanzan, dice cuántos quedan.
+  [amount]` reparte puntos (por ejemplo `/soulsstats raise vigor 3`); responde con el resumen de `/soulsstats` o, si no alcanzan, dice cuántos quedan.
   Para admins (nivel de permiso 2): `/soulsstats points <players> <amount>` da puntos libres que no
   vienen del nivel (comprados, de recompensa), y `/soulsstats points <players> <amount> <stat>` da
   puntos fijos en esa stat, que el tótem del renacer no devuelve. `/soulsstats levels <players> <amount>`
@@ -112,7 +123,7 @@ En `src/main/java/soulsstats/`, una carpeta por tema; `SoulsStats` es la entrada
   ni drop: los admins deciden cómo se consigue (tiendas, drops de jefes, `/give`). No se gasta si no hay
   puntos repartidos.
 - Cambiar stats (subir o reasignar) emite `StatsChangedEvent`; el vigor se recalcula con ese evento, al reaparecer
-  y al entrar al server.
+  y al entrar al server. No escribe en el chat: lo muestra la pantalla de stats.
 - **Peso de ítems** (ADR-0007 del mod). Cada ítem pesa lo que dice `data/soulsstats/items.json`, por ejemplo
   `{"minecraft:shield": {"weight": 4}}`. Un ítem sin
   entrada pesa lo que suma en armadura, dureza y daño de ataque (provisional): un peto de hierro 6, uno de
@@ -288,8 +299,13 @@ Decisiones abiertas, para el dueño del repo:
 
 - **Receta del tótem del renacer.** Propuesta: sin forma, tótem de la inmortalidad + estrella del Nether +
   fragmento de eco (asaltos, Wither y ciudad antigua: contenido de fin de juego).
-- **Interfaz gráfica.** HUD de nivel y XP, pantalla para repartir puntos y ver stats. Mientras tanto,
-  todo por comandos y chat coloreado (ADR-0005 del mod); un comando podrá abrir una pantalla.
+- **Interfaz gráfica.** Hecha la pantalla de stats v1 (vanilla). Falta: barra de XP dibujada, qué da cada
+  punto (vida, carga, daño) al pasar el mouse y HUD de nivel y XP.
+- **Permisos por comando.** Hoy hay dos niveles: repartir tus puntos (`raise`), ver (`/soulsstats`, `weight`,
+  `help`) es para todos, y `points` y `levels` piden nivel de permiso 2 (gamemaster), igual para darte a ti que a
+  otro. Separar permisos por acción y por destino (darte puntos o niveles a ti, dárselos a otros), asignables
+  por el admin, por ejemplo con nodos tipo `soulsstats.command.points.self` / `.others` (fabric-permissions-api,
+  que lee LuckPerms) y el nivel 2 como respaldo.
 - **Revisar traducciones.** Las de idiomas distintos del español son una primera versión; conviene que las
   revise un hablante nativo.
 - **Nivel máximo.** No hay; la curva de XP (`level_xp`) acelera, pero no tiene tope.

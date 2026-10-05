@@ -8,6 +8,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import soulsstats.SoulsStats;
 import soulsstats.progress.PlayerProgress;
 import soulsstats.stat.Stat;
+import soulsstats.weight.Load;
 
 /**
  * Texto coloreado que comparten comandos y avisos (ADR-0005 del mod). Todo lo que se lee va por tr: se traduce con
@@ -38,6 +39,15 @@ public final class Text {
 		String path = stat.id().getPath();
 		return Component.translatableWithFallback("stat." + stat.id().getNamespace() + "." + path,
 				path.substring(0, 1).toUpperCase() + path.substring(1));
+	}
+
+	public static MutableComponent load(Load load) {
+		return switch (load) {
+			case LIGHT -> tr("load.light", "light load");
+			case NORMAL -> tr("load.normal", "normal load");
+			case HEAVY -> tr("load.heavy", "heavy load");
+			case OVERLOADED -> tr("load.overloaded", "overloaded");
+		};
 	}
 
 	/** " · N free points" en verde, o nada si no hay. */

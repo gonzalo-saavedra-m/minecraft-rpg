@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "Requisiti:",
 	"soulsstats.tooltip.level": "Livello",
 	"soulsstats.tooltip.equip_level": "Livello per equipaggiare",
-	"soulsstats.tooltip.scaling": "Bonus parametri:"
+	"soulsstats.tooltip.scaling": "Bonus parametri:",
+	"key.soulsstats.open": "Apri statistiche",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "Personaggio",
+	"soulsstats.screen.level": "Livello %s",
+	"soulsstats.screen.xp": "PE %s / %s",
+	"soulsstats.screen.free_points": "%s punti liberi",
+	"soulsstats.screen.no_free_points": "Nessun punto libero",
+	"soulsstats.screen.raise": "Maiusc + clic: +%s",
+	"soulsstats.screen.no_server": "Questo server non ha Souls Stats",
+	"soulsstats.toast.level_up": "Livello %s!",
+	"soulsstats.toast.free_points": "%s punti liberi · %s"
 }
