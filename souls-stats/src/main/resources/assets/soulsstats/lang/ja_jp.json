@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "必要能力値：",
 	"soulsstats.tooltip.level": "レベル",
 	"soulsstats.tooltip.equip_level": "装備に必要なレベル",
-	"soulsstats.tooltip.scaling": "能力補正："
+	"soulsstats.tooltip.scaling": "能力補正：",
+	"key.soulsstats.open": "ステータスを開く",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "キャラクター",
+	"soulsstats.screen.level": "レベル %s",
+	"soulsstats.screen.xp": "経験値 %s / %s",
+	"soulsstats.screen.free_points": "未振りポイント %s",
+	"soulsstats.screen.no_free_points": "未振りポイントなし",
+	"soulsstats.screen.raise": "Shift + クリック：+%s",
+	"soulsstats.screen.no_server": "このサーバーには Souls Stats がありません",
+	"soulsstats.toast.level_up": "レベル %s！",
+	"soulsstats.toast.free_points": "未振りポイント %s · %s"
 }

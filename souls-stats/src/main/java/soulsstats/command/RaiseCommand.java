@@ -31,6 +31,7 @@ final class RaiseCommand {
 			command.getSource().sendFailure(Text.tr("not_enough_points", "You have %s free points", SoulsStats.progress(player).freePoints()));
 			return 0;
 		}
+		command.getSource().sendSuccess(() -> Text.summary(player), false);
 		return amount;
 	}
 }

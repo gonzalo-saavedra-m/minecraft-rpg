@@ -36,6 +36,7 @@ import soulsstats.stat.WeaponScaling;
 import soulsstats.item.ItemProperties;
 import soulsstats.item.LevelRequirements;
 import soulsstats.progress.PlayerStatsPayload;
+import soulsstats.progress.RaisePayload;
 import soulsstats.weight.Load;
 
 public class SoulsStats implements ModInitializer {
@@ -54,6 +55,7 @@ public class SoulsStats implements ModInitializer {
 		ItemProperties.register();
 		LevelRequirements.register();
 		PlayerStatsPayload.register();
+		RaisePayload.register();
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((level, killer, killed, source) ->
 				player(killer).ifPresent(player -> {
 					PlayerProgress before = progress(player);
@@ -95,6 +97,7 @@ public class SoulsStats implements ModInitializer {
 			// Bajar de nivel (por comando) puede dejar puesta armadura que ya no se puede equipar.
 			new StatsChangedEvent(player, after).emit();
 		}
+		PlayerStatsPayload.send(player);
 	}
 
 	/** Puntos libres que no vienen del nivel (comprados, de recompensa); negativo los quita. */

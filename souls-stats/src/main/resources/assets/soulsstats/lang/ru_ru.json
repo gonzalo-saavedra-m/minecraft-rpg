@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "Требования:",
 	"soulsstats.tooltip.level": "Уровень",
 	"soulsstats.tooltip.equip_level": "Уровень для экипировки",
-	"soulsstats.tooltip.scaling": "Масштабирование:"
+	"soulsstats.tooltip.scaling": "Масштабирование:",
+	"key.soulsstats.open": "Открыть характеристики",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "Персонаж",
+	"soulsstats.screen.level": "Уровень %s",
+	"soulsstats.screen.xp": "Опыт %s / %s",
+	"soulsstats.screen.free_points": "Свободных очков: %s",
+	"soulsstats.screen.no_free_points": "Нет свободных очков",
+	"soulsstats.screen.raise": "Shift + клик: +%s",
+	"soulsstats.screen.no_server": "На этом сервере нет Souls Stats",
+	"soulsstats.toast.level_up": "Уровень %s!",
+	"soulsstats.toast.free_points": "Свободных очков: %s · %s"
 }

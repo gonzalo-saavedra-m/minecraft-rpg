@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "需求：",
 	"soulsstats.tooltip.level": "等级",
 	"soulsstats.tooltip.equip_level": "装备所需等级",
-	"soulsstats.tooltip.scaling": "属性加成："
+	"soulsstats.tooltip.scaling": "属性加成：",
+	"key.soulsstats.open": "打开属性",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "角色",
+	"soulsstats.screen.level": "等级 %s",
+	"soulsstats.screen.xp": "经验 %s / %s",
+	"soulsstats.screen.free_points": "%s 个可用属性点",
+	"soulsstats.screen.no_free_points": "没有可用属性点",
+	"soulsstats.screen.raise": "Shift + 点击：+%s",
+	"soulsstats.screen.no_server": "此服务器没有安装 Souls Stats",
+	"soulsstats.toast.level_up": "等级 %s！",
+	"soulsstats.toast.free_points": "%s 个可用属性点 · %s"
 }

@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "Anforderungen:",
 	"soulsstats.tooltip.level": "Stufe",
 	"soulsstats.tooltip.equip_level": "Stufe zum Ausrüsten",
-	"soulsstats.tooltip.scaling": "Skalierung:"
+	"soulsstats.tooltip.scaling": "Skalierung:",
+	"key.soulsstats.open": "Werte öffnen",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "Charakter",
+	"soulsstats.screen.level": "Stufe %s",
+	"soulsstats.screen.xp": "EP %s / %s",
+	"soulsstats.screen.free_points": "%s freie Punkte",
+	"soulsstats.screen.no_free_points": "Keine freien Punkte",
+	"soulsstats.screen.raise": "Umschalt + Klick: +%s",
+	"soulsstats.screen.no_server": "Dieser Server hat Souls Stats nicht",
+	"soulsstats.toast.level_up": "Stufe %s!",
+	"soulsstats.toast.free_points": "%s freie Punkte · %s"
 }

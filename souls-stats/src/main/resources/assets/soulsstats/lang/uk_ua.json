@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "Вимоги:",
 	"soulsstats.tooltip.level": "Рівень",
 	"soulsstats.tooltip.equip_level": "Рівень для екіпірування",
-	"soulsstats.tooltip.scaling": "Масштабування:"
+	"soulsstats.tooltip.scaling": "Масштабування:",
+	"key.soulsstats.open": "Відкрити характеристики",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "Персонаж",
+	"soulsstats.screen.level": "Рівень %s",
+	"soulsstats.screen.xp": "Досвід %s / %s",
+	"soulsstats.screen.free_points": "Вільних очок: %s",
+	"soulsstats.screen.no_free_points": "Немає вільних очок",
+	"soulsstats.screen.raise": "Shift + клік: +%s",
+	"soulsstats.screen.no_server": "На цьому сервері немає Souls Stats",
+	"soulsstats.toast.level_up": "Рівень %s!",
+	"soulsstats.toast.free_points": "Вільних очок: %s · %s"
 }

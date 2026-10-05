@@ -6,7 +6,8 @@
 		"LivingEntityMixin"
 	],
 	"client": [
-		"LocalPlayerMixin"
+		"LocalPlayerMixin",
+		"ToastManagerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

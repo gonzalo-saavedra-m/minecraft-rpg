@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "요구 능력치:",
 	"soulsstats.tooltip.level": "레벨",
 	"soulsstats.tooltip.equip_level": "장착 레벨",
-	"soulsstats.tooltip.scaling": "능력 보정:"
+	"soulsstats.tooltip.scaling": "능력 보정:",
+	"key.soulsstats.open": "능력치 열기",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "캐릭터",
+	"soulsstats.screen.level": "레벨 %s",
+	"soulsstats.screen.xp": "경험치 %s / %s",
+	"soulsstats.screen.free_points": "남은 포인트 %s",
+	"soulsstats.screen.no_free_points": "남은 포인트 없음",
+	"soulsstats.screen.raise": "Shift + 클릭: +%s",
+	"soulsstats.screen.no_server": "이 서버에는 Souls Stats가 없습니다",
+	"soulsstats.toast.level_up": "레벨 %s!",
+	"soulsstats.toast.free_points": "남은 포인트 %s · %s"
 }

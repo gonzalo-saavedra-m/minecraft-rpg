@@ -27,5 +27,16 @@
 	"soulsstats.tooltip.requirements": "Wymagania:",
 	"soulsstats.tooltip.level": "Poziom",
 	"soulsstats.tooltip.equip_level": "Poziom do założenia",
-	"soulsstats.tooltip.scaling": "Skalowanie:"
+	"soulsstats.tooltip.scaling": "Skalowanie:",
+	"key.soulsstats.open": "Otwórz statystyki",
+	"key.category.soulsstats.main": "Souls Stats",
+	"soulsstats.screen.title": "Postać",
+	"soulsstats.screen.level": "Poziom %s",
+	"soulsstats.screen.xp": "PD %s / %s",
+	"soulsstats.screen.free_points": "Wolne punkty: %s",
+	"soulsstats.screen.no_free_points": "Brak wolnych punktów",
+	"soulsstats.screen.raise": "Shift + klik: +%s",
+	"soulsstats.screen.no_server": "Ten serwer nie ma Souls Stats",
+	"soulsstats.toast.level_up": "Poziom %s!",
+	"soulsstats.toast.free_points": "Wolne punkty: %s · %s"
 }

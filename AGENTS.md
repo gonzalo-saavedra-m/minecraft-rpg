@@ -106,7 +106,10 @@ echo '<comando a probar>' > /tmp/mc
 echo stop > /tmp/mc
 ```
 
-Lo que dependa de un jugador (stats, XP al matar, peso) se prueba en el cliente con `runClient`.
+Lo que dependa de un jugador (stats, XP al matar, peso) se prueba en el cliente con `runClient`. Las pantallas se
+iteran con capturas: `./gradlew :<mod>:runClientGameTest` corre los tests de `<mod>/src/gametest/` (abre una
+ventana, no corre en CI) y deja las imágenes en `<mod>/build/run/clientGameTest/screenshots/`; míralas,
+corrige y repite. Esos tests solo usan la API que existe desde 26.1 (ADR-0010).
 
 La primera vez hay que aceptar la EULA en `<mod>/run/eula.txt`. El servidor se pausa a los 60 s sin
 jugadores.
